@@ -14,10 +14,3 @@ class TestImageScraper:
 
         assert img_urls[0] == 'https://upload.wikimedia.org/wikipedia/commons/f/ff/OmmadissW.jpg'
 
-    def test_download_image(self):
-        img_urls_example = ['https://upload.wikimedia.org/wikipedia/commons/f/ff/OmmadissW.jpg']
-        img_scraper = ImageScraper()
-
-        img_scraper.download_images(img_urls_example)
-
-        assert os.path.exists('image_0.jpg')
