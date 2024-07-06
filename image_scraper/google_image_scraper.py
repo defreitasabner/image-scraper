@@ -1,8 +1,6 @@
 import re
 from time import sleep
 import urllib.parse
-import os
-from datetime import datetime
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -11,16 +9,16 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import requests
 
-class ImageScraper:
+
+class GoogleImageScraper:
     def __init__(self) -> None:
         self.__driver = webdriver.Chrome(
             service = Service(ChromeDriverManager().install()),
-            options = self.__select_options()
+            options = self.__set_options()
         )
 
-    def __select_options(self) -> Options:
+    def __set_options(self) -> Options:
         options = Options()
         options.add_argument('--headless')
         options.add_argument('disable-extensions')
@@ -62,23 +60,4 @@ class ImageScraper:
                 img_urls.append(decoded_url)
         print(f'Images URLs extracted: {len(img_urls)}')
         return img_urls
-    
-    def download_images(self, img_urls: list[str]) -> None:
-        dir_name = datetime.now().strftime('%Y_%m_%d_%H%M')
-        os.mkdir(dir_name)
-        counter = 0
-        for url in img_urls:
-            try:
-                img_data = requests.get(url, stream = True, timeout = 5).content
-                with open(f'{dir_name}/image_{counter}.jpg', 'wb') as file:
-                    file.write(img_data)
-                counter += 1
-            except:
-                pass
-        print(f'Downloaded Images: {counter}')
 
-if __name__ == '__main__':
-    image_scraper = ImageScraper()
-    hrefs = image_scraper.extract_hrefs_from_google_image_page('Yoga Pose Cobra', 100)
-    img_urls = image_scraper.extract_img_urls_from_hrefs(hrefs)
-    image_scraper.download_images(img_urls)
