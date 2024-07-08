@@ -46,7 +46,6 @@ class GoogleImageScraper:
             except:
                 pass
         self.__driver.close()
-        print(f'Images hrefs found: {len(hrefs)}')
         return hrefs
     
     def extract_img_urls_from_hrefs(self, hrefs: list[str]) -> list[str]:
@@ -58,6 +57,5 @@ class GoogleImageScraper:
                 extracted_url = result.group(1)
                 decoded_url = urllib.parse.unquote(extracted_url)
                 img_urls.append(decoded_url)
-        print(f'Images URLs extracted: {len(img_urls)}')
         return img_urls
 

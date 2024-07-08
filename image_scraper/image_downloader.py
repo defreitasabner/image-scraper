@@ -6,10 +6,7 @@ import requests
 
 class ImageDownloader:
     def __init__(self, root_dir: str | None = None) -> None:
-        self.__ROOT_DIR = self.__set_root_dir(root_dir)
-
-    def __set_root_dir(self, root_dir):
-        return root_dir if root_dir else os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        pass
 
     def download_images(
         self, 
@@ -26,7 +23,7 @@ class ImageDownloader:
         for url in img_urls:
             try:
                 img_data = requests.get(url, stream = True, timeout = 5).content
-                img_path = os.path.join(self.__ROOT_DIR, dir_name, f'{prefix}_{counter}.jpg') 
+                img_path = os.path.join(dir_name, f'{prefix}_{counter}.jpg')
                 with open(img_path, 'wb') as file:
                     file.write(img_data)
                 counter += 1
