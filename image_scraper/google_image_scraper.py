@@ -9,6 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 
 
 class GoogleImageScraper:
@@ -35,8 +36,10 @@ class GoogleImageScraper:
         WebDriverWait(self.__driver, 10).until(
             EC.presence_of_element_located((By.ID, 'search'))
         )
+        self.__driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
+        sleep(1)
         container = self.__driver.find_element(By.ID, 'search')
-        titles = container.find_elements(By.TAG_NAME, 'h3')[:limit]
+        titles = container.find_elements(By.TAG_NAME, 'h3')[:int(limit * 1.25)]
         hrefs = []
         for title in titles:
             try:

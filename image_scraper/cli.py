@@ -35,7 +35,6 @@ class ImageScraperCLI:
         parser_run.add_argument(
             '-v', 
             '--verbose',
-            type = bool,
             help = 'Set to see logs.',
             action = 'store_true'
         )
@@ -44,6 +43,8 @@ class ImageScraperCLI:
     def __run_scrap_routine(self, args):
         if not args.query:
             raise Exception('The argument "--query" is required.')
+        if args.verbose:
+            print(f'Searching for images on Google Images ...')
         image_scraper = GoogleImageScraper()
         hrefs = image_scraper.extract_hrefs_from_google_image_page(args.query, args.limit)
         if args.verbose:
@@ -52,7 +53,14 @@ class ImageScraperCLI:
         if args.verbose:
             print(f'Images URLs extracted: {len(img_urls)}')
         img_downloader = ImageDownloader()
-        img_downloader.download_images(img_urls, prefix = args.prefix)
+        downloaded, not_allowed, broken = \
+            img_downloader.download_images(img_urls, args.limit, prefix = args.prefix)
+        if args.verbose:
+            print('------------------ FINISH ------------------')
+            print(f'Successfully downloaded images: {downloaded}')
+            print(f'Not allowed format images: {not_allowed}')
+            print(f'Broken images: {broken}')
+            print('--------------------------------------------')
 
     def main(self, argsv = None):
         args = self.__parser.parse_args(argsv)
