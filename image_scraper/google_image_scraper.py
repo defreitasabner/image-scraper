@@ -36,7 +36,7 @@ class GoogleImageScraper:
             EC.presence_of_element_located((By.ID, 'search'))
         )
         container = self.__driver.find_element(By.ID, 'search')
-        titles = container.find_elements(By.TAG_NAME, 'h3')[:limit]
+        titles = container.find_elements(By.TAG_NAME, 'h3')[:int(limit * 1.25)]
         hrefs = []
         for title in titles:
             try:
